@@ -1,5 +1,6 @@
 package com.driver;
 
+/*
 import java.util.ArrayList;
 import org.apache.commons.lang3.tuple.Triple;
 import java.util.Date;
@@ -95,7 +96,7 @@ public class Gmail extends Email {
     }
 }
 
-/*
+*/
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -157,12 +158,17 @@ public class Gmail extends Email {
     public void deleteMail(String message){
         // Each message is distinct
         // If the given message is found in any mail in the inbox, move the mail to trash, else do nothing
+        int index = -1;
         for(int i=0;i<inboxMailList.size();i++){
             if(inboxMailList.get(i).message.equals(message)){
-                trashMailList.add(inboxMailList.get(i));
-                inboxMailList.remove(i);
+                index = i;
                 break;
             }
+        }
+
+        if(index != -1){
+            trashMailList.add(inboxMailList.get(index));
+            inboxMailList.remove(index);
         }
     }
 
@@ -238,4 +244,3 @@ class Mail {
     }
 }
 
-*/
