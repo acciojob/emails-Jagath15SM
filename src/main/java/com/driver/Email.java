@@ -53,11 +53,8 @@ public class Email {
             else{
                 specialChar = true;
             }
-            if(length >= 8 && upperCase && lowerCase && digit && specialChar){
-                return true;
-            }
         }
 
-        return false;
+        return (length >= 8 && upperCase && lowerCase && digit && specialChar);
     }
 }

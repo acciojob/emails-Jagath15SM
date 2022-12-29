@@ -6,23 +6,22 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class Workspace extends Gmail{
-    private String emailId;
-    private String password;
+//    private String emailId;
+//    private String password;
 
     private ArrayList<Meeting> calendar; // Stores all the meetings
 
     public Workspace(String emailId) {
         // The inboxCapacity is equal to the maximum value an integer can store.
         super(emailId, Integer.MAX_VALUE);
-        this.emailId = emailId;
-        this.password = "Accio@123";
+//        this.emailId = emailId;
+//        this.password = "Accio@123";
         this.calendar = new ArrayList<>();
     }
 
     public void addMeeting(Meeting meeting){
         //add the meeting to calendar
         calendar.add(meeting);
-
     }
 
     public int findMaxMeetings(){
