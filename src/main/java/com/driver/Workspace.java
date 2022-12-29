@@ -37,14 +37,20 @@ public class Workspace extends Gmail{
                 LocalTime s1 = obj1.getStartTime();
                 LocalTime s2 = obj2.getStartTime();
 
-                int value = s1.compareTo(s2);
-                if(value < 0) return -1;
-                if(value > 0) return 1;
                 LocalTime e1 = obj1.getEndTime();
                 LocalTime e2 = obj2.getEndTime();
-                return e1.compareTo(e2);
+
+                return e1.compareTo(e2) != 0 ? e1.compareTo(e2) : s1.compareTo(s2);
             }
         });
-        return attending_meetings.size();
+        LocalTime endTime = LocalTime.MIN;
+        int result = 0;
+        for(Meeting m : attending_meetings){
+            if(endTime.compareTo(m.getStartTime()) < 0){
+                result++;
+                endTime = m.getEndTime();
+            }
+        }
+        return result;
     }
 }
