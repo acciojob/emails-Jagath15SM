@@ -10,6 +10,10 @@ public class Gmail extends Email {
     private ArrayList<Mail> inboxMailList;
     private ArrayList<Mail> trashMailList;
 
+    int inboxCapacity; //maximum number of mails inbox can store
+    //Inbox: Stores mails. Each mail has date (Date), sender (String), message (String). It is guaranteed that message is distinct for all mails.
+    //Trash: Stores mails. Each mail has date (Date), sender (String), message (String)
+
     @Override
     public String getEmailId() {
         return emailId;
@@ -28,9 +32,7 @@ public class Gmail extends Email {
         this.password = password;
     }
 
-    int inboxCapacity; //maximum number of mails inbox can store
-    //Inbox: Stores mails. Each mail has date (Date), sender (String), message (String). It is guaranteed that message is distinct for all mails.
-    //Trash: Stores mails. Each mail has date (Date), sender (String), message (String)
+
     public Gmail(String emailId, int inboxCapacity) {
         super(emailId);
         this.emailId = emailId;
@@ -47,10 +49,12 @@ public class Gmail extends Email {
         // 1. Each mail in the inbox is distinct.
         // 2. The mails are received in non-decreasing order. This means that the date of a new mail is greater than equal to the dates of mails received already.
         if(inboxMailList.size() >= inboxCapacity){
-            trashMailList.add(inboxMailList.get(0));
+            Mail oldEmail = inboxMailList.get(0);
             inboxMailList.remove(0);
+            trashMailList.add(oldEmail);
         }
-        inboxMailList.add(new Mail(date, sender, message));
+        Mail newMail = new Mail(date, sender, message);
+        inboxMailList.add(newMail);
     }
 
     public void deleteMail(String message){
@@ -60,6 +64,7 @@ public class Gmail extends Email {
             if(inboxMailList.get(i).message.equals(message)){
                 trashMailList.add(inboxMailList.get(i));
                 inboxMailList.remove(i);
+                break;
             }
         }
     }
@@ -81,18 +86,25 @@ public class Gmail extends Email {
     public int findMailsBetweenDates(Date start, Date end){
         //find number of mails in the inbox which are received between given dates
         //It is guaranteed that start date <= end date, both dates included
-        int s = 0;
-        int e = inboxMailList.size()-1;
-        for(int i=0;i<inboxMailList.size();i++){
-            Mail m = inboxMailList.get(i);
-            if(start.equals(m.date)){
-                s = i;
-            }
-            if(end.equals(m.date)){
-                e = i;
+//        int s = 0;
+//        int e = inboxMailList.size()-1;
+//        for(int i=0;i<inboxMailList.size();i++){
+//            Mail m = inboxMailList.get(i);
+//            if(start.equals(m.date)){
+//                s = i;
+//            }
+//            if(end.equals(m.date)){
+//                e = i;
+//            }
+//        }
+//        return (e - s + 1);
+        int count = 0;
+        for(int i = 0; i<inboxMailList.size(); i++){
+            if((inboxMailList.get(i).date.compareTo(start) >= 0) && (inboxMailList.get(i).date.compareTo(end) <= 0)){
+                count++;
             }
         }
-        return (e - s + 1);
+        return count;
     }
 
     public int getInboxSize(){
@@ -114,22 +126,22 @@ public class Gmail extends Email {
         // Return the maximum number of mails that can be stored in the inbox
         return inboxCapacity;
     }
-
-    //My methods
-    public void changePassword(String oldPassword, String newPassword){
-        //Change password only if the oldPassword is equal to current password and the new password meets all of the following:
-        // 1. It contains at least 8 characters
-        // 2. It contains at least one uppercase letter
-        // 3. It contains at least one lowercase letter
-        // 4. It contains at least one digit
-        // 5. It contains at least one special character. Any character apart from alphabets and digits is a special character
-
-        if(password.equals(oldPassword)){
-            if(isValidPassword(newPassword)){
-                password = newPassword;
-            }
-        }
-    }
+//
+//    //My methods
+//    public void changePassword(String oldPassword, String newPassword){
+//        //Change password only if the oldPassword is equal to current password and the new password meets all of the following:
+//        // 1. It contains at least 8 characters
+//        // 2. It contains at least one uppercase letter
+//        // 3. It contains at least one lowercase letter
+//        // 4. It contains at least one digit
+//        // 5. It contains at least one special character. Any character apart from alphabets and digits is a special character
+//
+//        if(password.equals(oldPassword)){
+//            if(isValidPassword(newPassword)){
+//                password = newPassword;
+//            }
+//        }
+//    }
 }
 
 class Mail {
